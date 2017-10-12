@@ -10,10 +10,10 @@ namespace Graphs
     {
         public class Vertex
         {
-            public string name;
-            public Vertex(string name)
+            public int vertex;
+            public Vertex(int vertex)
             {
-                this.name = name;
+                this.vertex = vertex;
             }
         }
         public class Edge
@@ -28,6 +28,7 @@ namespace Graphs
                 this.distance = distance;
             }
         }
+
 
         public void AddEdge(string from, string to, int val)
         {
