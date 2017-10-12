@@ -26,10 +26,11 @@ namespace Graphs
 
 
             int a = graph.DelEdge("A", "B");
-
             graph.Print();
+            Console.WriteLine("delEdge = {0}", a);
 
-            Console.WriteLine("a = {0}", a);
+            int c = graph.GetEdge("D", "A");
+            Console.WriteLine("edge = {0}", c);
 
             Console.ReadKey();
         }

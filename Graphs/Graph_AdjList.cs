@@ -31,7 +31,7 @@ namespace Graphs
 
         private Dictionary<Vertex, Dictionary<Vertex, Edge>> graph = new Dictionary<Vertex, Dictionary<Vertex, Edge>>();
 
-        public void AddVertex(string name)
+        public void AddVertex(string name) //+
         {
             if (graph.Keys.FirstOrDefault((x) => x.name == name) == null)
             {
@@ -39,7 +39,7 @@ namespace Graphs
             }
         }
 
-        public void AddEdge(string from, string to, int val)
+        public void AddEdge(string from, string to, int val) //+ check!!
         {
             Vertex vFrom = graph.Keys.First((x) => x.name == from);
             Vertex vTo = graph.Keys.FirstOrDefault((x) => x.name == to);
@@ -66,7 +66,7 @@ namespace Graphs
             graph.Remove(vDel);
         }
 
-        public int DelEdge(string from, string to)
+        public int DelEdge(string from, string to) //+
         {
            
             Vertex vFrom = graph.Keys.First((x) => x.name == from);
@@ -79,24 +79,26 @@ namespace Graphs
                 {
                     delEdge.distance = GetEdge(from, to);
                     Vertex Del = graph[vFrom].FirstOrDefault(x => x.Key.name == to).Key;
-                    graph[vFrom].Remove(GetLinkedVertexByName(from, to));
+                    //graph[vFrom].Remove(GetLinkedVertexByName(from, to));
+                    graph[vFrom].Remove(graph[vFrom].FirstOrDefault(x => x.Key.name == to).Key);
                 }
             }
             return delEdge.distance;
         }
         
-        private Vertex GetLinkedVertexByName(string main, string link)
-        {
-            return graph[GetVertexByName(main)].FirstOrDefault(x => x.Key.name == link).Key;
-        }
-        private Vertex GetVertexByName(string name)
-        {
-            return graph.FirstOrDefault(x => x.Key.name == name).Key;
-        }
+        //private Vertex GetLinkedVertexByName(string from, string to)
+        //{
+        //    Vertex vFrom = graph.FirstOrDefault(x => x.Key.name == from).Key;
+        //    return graph[vFrom].FirstOrDefault(x => x.Key.name == to).Key;
+        //}
+        //private Vertex GetVertex(string name)
+        //{
+        //    return graph.FirstOrDefault(x => x.Key.name == name).Key;
+        //}
 
 
 
-        public void Print()
+        public void Print() //+
         {
             foreach (var keyValuePair in graph)
             {
@@ -108,7 +110,7 @@ namespace Graphs
             }
         }
 
-        public int GetEdge(string from, string to)
+        public int GetEdge(string from, string to) //+
         {
             int edge = 0;
             Vertex vFrom = graph.Keys.First((x) => x.name == from);
@@ -124,7 +126,7 @@ namespace Graphs
             return edge;
         }
 
-        public void SetEdge(string from, string to)
+        public void SetEdge(string from, string to, int val)
         {
             throw new NotImplementedException();
         }

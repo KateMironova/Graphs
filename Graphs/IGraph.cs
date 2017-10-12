@@ -14,6 +14,6 @@ namespace Graphs
         int DelEdge(string from, string to);
         void Print();
         int GetEdge(string from, string to);
-        void SetEdge(string from, string to);
+        void SetEdge(string from, string to, int val);
     }
 }
