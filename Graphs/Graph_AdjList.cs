@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Graphs
 {
-    public class Graph_AdjgrList : IGraph
+    public class Graph_AdjList : IGraph
     {
         public class Vertex
         {
@@ -29,49 +29,76 @@ namespace Graphs
             }
         }
 
-        private Dictionary<Vertex, List<KeyValuePair<Vertex, Edge>>> grList = new Dictionary<Vertex, List<KeyValuePair<Vertex, Edge>>>();
+        private Dictionary<Vertex, Dictionary<Vertex, Edge>> graph = new Dictionary<Vertex, Dictionary<Vertex, Edge>>();
 
         public void AddVertex(string name)
         {
-            if (grList.Keys.FirstOrDefault((x) => x.name == name) == null)
+            if (graph.Keys.FirstOrDefault((x) => x.name == name) == null)
             {
-                grList.Add(new Vertex(name), new List<KeyValuePair<Vertex, Edge>>());
+                graph.Add(new Vertex(name), new Dictionary<Vertex, Edge>());
             }
         }
 
         public void AddEdge(string from, string to, int val)
         {
-            Vertex vFrom = grList.Keys.First((x) => x.name == from);
-            Vertex vTo = grList.Keys.FirstOrDefault((x) => x.name == to);
+            Vertex vFrom = graph.Keys.First((x) => x.name == from);
+            Vertex vTo = graph.Keys.FirstOrDefault((x) => x.name == to);
+            Edge newEdge = new Edge(vFrom, vTo, val);
             
             if (vFrom == null)
             {
                 AddVertex(from);
-                vFrom = grList.Keys.First((x) => x.name == from);
+                vFrom = graph.Keys.First((x) => x.name == from);
             }
             if (vTo == null)
             {
                 AddVertex(to);
-                vTo = grList.Keys.FirstOrDefault((x) => x.name == to);
+                vTo = graph.Keys.FirstOrDefault((x) => x.name == to);
             }
-            grList[vFrom].Add(new KeyValuePair<Vertex, Edge>(vTo, new Edge(vFrom, vTo, val)));
+            // ! проверка на наличие edge меджу этими пунктами
+            
+            graph[vFrom].Add(vTo, newEdge);
 
         }
-        public void DelVertex(string name)
+        public void DelVertex(string name) //-
         {
-            Vertex vDel = grList.Keys.First((x) => x.name == name);
-            grList.Remove(vDel);
+            Vertex vDel = graph.Keys.First((x) => x.name == name);
+            graph.Remove(vDel);
         }
 
         public int DelEdge(string from, string to)
         {
+           
+            Vertex vFrom = graph.Keys.First((x) => x.name == from);
+            Vertex vTo = graph.Keys.FirstOrDefault((x) => x.name == to);
+            Edge delEdge = new Edge(vFrom, vTo, 0);
 
-            throw new NotImplementedException();
+            if (vFrom != null && vTo != null)
+            {
+                if (graph[vFrom].FirstOrDefault(x => x.Key.name == to).Key != null)
+                {
+                    delEdge.distance = GetEdge(from, to);
+                    Vertex Del = graph[vFrom].FirstOrDefault(x => x.Key.name == to).Key;
+                    graph[vFrom].Remove(GetLinkedVertexByName(from, to));
+                }
+            }
+            return delEdge.distance;
         }
+        
+        private Vertex GetLinkedVertexByName(string main, string link)
+        {
+            return graph[GetVertexByName(main)].FirstOrDefault(x => x.Key.name == link).Key;
+        }
+        private Vertex GetVertexByName(string name)
+        {
+            return graph.FirstOrDefault(x => x.Key.name == name).Key;
+        }
+
+
 
         public void Print()
         {
-            foreach (var keyValuePair in grList)
+            foreach (var keyValuePair in graph)
             {
                 Console.WriteLine("From {0}:", keyValuePair.Key.name);
                 foreach (var item in keyValuePair.Value)
@@ -83,7 +110,18 @@ namespace Graphs
 
         public int GetEdge(string from, string to)
         {
-            throw new NotImplementedException();
+            int edge = 0;
+            Vertex vFrom = graph.Keys.First((x) => x.name == from);
+            Vertex vTo = graph.Keys.FirstOrDefault((x) => x.name == to);
+
+            if (vFrom != null && vTo != null)
+            {
+                if (graph[vFrom].FirstOrDefault(x => x.Key.name == to).Key != null)
+                {
+                    edge = graph[vFrom].FirstOrDefault(x => x.Key.name == to).Value.distance;
+                }
+            }
+            return edge;
         }
 
         public void SetEdge(string from, string to)
