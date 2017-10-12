@@ -31,7 +31,8 @@ namespace Graphs
 
         private Dictionary<Vertex, Dictionary<Vertex, Edge>> graph = new Dictionary<Vertex, Dictionary<Vertex, Edge>>();
 
-        public void AddVertex(string name) //+
+        #region Add
+        public void AddVertex(string name)
         {
             if (graph.Keys.FirstOrDefault((x) => x.name == name) == null)
             {
@@ -39,12 +40,11 @@ namespace Graphs
             }
         }
 
-        public void AddEdge(string from, string to, int val) //+ check!!
+        public void AddEdge(string from, string to, int val)
         {
             Vertex vFrom = graph.Keys.First((x) => x.name == from);
             Vertex vTo = graph.Keys.FirstOrDefault((x) => x.name == to);
-            Edge newEdge = new Edge(vFrom, vTo, val);
-            
+                        
             if (vFrom == null)
             {
                 AddVertex(from);
@@ -55,80 +55,102 @@ namespace Graphs
                 AddVertex(to);
                 vTo = graph.Keys.FirstOrDefault((x) => x.name == to);
             }
-            // ! проверка на наличие edge меджу этими пунктами
-            
-            graph[vFrom].Add(vTo, newEdge);
-
-        }
-        public void DelVertex(string name) //-
-        {
-            Vertex vDel = graph.Keys.First((x) => x.name == name);
-            graph.Remove(vDel);
-        }
-
-        public int DelEdge(string from, string to) //+
-        {
-           
-            Vertex vFrom = graph.Keys.First((x) => x.name == from);
-            Vertex vTo = graph.Keys.FirstOrDefault((x) => x.name == to);
-            Edge delEdge = new Edge(vFrom, vTo, 0);
-
-            if (vFrom != null && vTo != null)
+            // ! проверка на наличие edge между этими пунктами
+            if (GetEdgeRef(from, to) == null)
             {
-                if (graph[vFrom].FirstOrDefault(x => x.Key.name == to).Key != null)
-                {
-                    delEdge.distance = GetEdge(from, to);
-                    Vertex Del = graph[vFrom].FirstOrDefault(x => x.Key.name == to).Key;
-                    //graph[vFrom].Remove(GetLinkedVertexByName(from, to));
-                    graph[vFrom].Remove(graph[vFrom].FirstOrDefault(x => x.Key.name == to).Key);
-                }
+                Edge newEdge = new Edge(vFrom, vTo, val);
+                graph[vFrom].Add(vTo, newEdge);
             }
-            return delEdge.distance;
+        }
+        #endregion
+
+        #region Delete
+        public void DelVertex(string name)
+        {
+            Vertex vertex = GetVertexRef(name);
+            if (vertex == null)
+                throw new KeyNotFoundException();
+
+            graph.Remove(vertex);
+            foreach (var item in graph)
+            {
+                item.Value.Remove(vertex);
+            }
         }
         
-        //private Vertex GetLinkedVertexByName(string from, string to)
-        //{
-        //    Vertex vFrom = graph.FirstOrDefault(x => x.Key.name == from).Key;
-        //    return graph[vFrom].FirstOrDefault(x => x.Key.name == to).Key;
-        //}
-        //private Vertex GetVertex(string name)
-        //{
-        //    return graph.FirstOrDefault(x => x.Key.name == name).Key;
-        //}
-
-
-
-        public void Print() //+
+        public int DelEdge(string from, string to)
         {
-            foreach (var keyValuePair in graph)
+            Edge edge = GetEdgeRef(from, to);
+            if (edge == null)
+                throw new KeyNotFoundException();
+
+            int w = edge.distance;
+            graph[edge.from].Remove(edge.to);
+            return w;
+        }
+        
+        #endregion
+
+        public void Print()
+        {
+            foreach (var pair in graph)
             {
-                Console.WriteLine("From {0}:", keyValuePair.Key.name);
-                foreach (var item in keyValuePair.Value)
+                Console.WriteLine("From {0}:", pair.Key.name);
+                foreach (var item in pair.Value)
                 {
                     Console.WriteLine("\t to {0}: {1}", item.Key.name, item.Value.distance);
                 }
             }
         }
 
-        public int GetEdge(string from, string to) //+
+        #region Get_Set_Edge
+       
+        public int GetEdge(string from, string to)
         {
-            int edge = 0;
-            Vertex vFrom = graph.Keys.First((x) => x.name == from);
-            Vertex vTo = graph.Keys.FirstOrDefault((x) => x.name == to);
+            Edge edge = GetEdgeRef(from, to);
+            if (edge == null)
+                throw new KeyNotFoundException();
 
-            if (vFrom != null && vTo != null)
-            {
-                if (graph[vFrom].FirstOrDefault(x => x.Key.name == to).Key != null)
-                {
-                    edge = graph[vFrom].FirstOrDefault(x => x.Key.name == to).Value.distance;
-                }
-            }
-            return edge;
+            return edge.distance;
         }
 
         public void SetEdge(string from, string to, int val)
         {
-            throw new NotImplementedException();
+            Edge edge = GetEdgeRef(from, to);
+            if (edge == null)
+                throw new KeyNotFoundException();
+
+            edge.distance = val;
         }
+        #endregion
+
+        #region Get/Set_Ref function
+        private Vertex GetVertexRef(string name)
+        {
+            Vertex vertex = null;
+            foreach (var item in graph)
+            {
+                if (item.Key.name == name)
+                    vertex = item.Key;
+            }
+            return vertex;
+        }
+        private Edge GetEdgeRef(string from, string to)
+        {
+            Edge edge = null;
+            foreach (var pair in graph)
+            {
+                if (pair.Key.name == from)
+                {
+                    foreach (var pair2 in pair.Value)
+                    {
+                        if (pair2.Key.name == to)
+                            edge = pair2.Value;
+                    }
+                }
+            }
+            return edge;
+        }
+        #endregion
     }
 }

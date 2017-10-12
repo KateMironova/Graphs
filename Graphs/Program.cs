@@ -24,13 +24,20 @@ namespace Graphs
 
             graph.Print();
 
+            //graph.DelVertex("C");
 
-            int a = graph.DelEdge("A", "B");
-            graph.Print();
-            Console.WriteLine("delEdge = {0}", a);
+            //graph.Print();
 
-            int c = graph.GetEdge("D", "A");
-            Console.WriteLine("edge = {0}", c);
+            //int a = graph.DelEdge("A", "B");
+            //graph.Print();
+            //Console.WriteLine("delEdge = {0}", a);
+
+            //int c = graph.GetEdge("D", "A");
+            //Console.WriteLine("edge = {0}", c);
+
+            //graph.SetEdge("B", "C", 1001);
+            //Console.WriteLine("-------------------------");
+            //graph.Print();
 
             Console.ReadKey();
         }
