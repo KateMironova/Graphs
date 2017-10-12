@@ -33,7 +33,7 @@ namespace Graphs
 
         #region Add
         public void AddVertex(string name)
-        {
+        {            
             if (graph.Keys.FirstOrDefault((x) => x.name == name) == null)
             {
                 graph.Add(new Vertex(name), new Dictionary<Vertex, Edge>());
@@ -60,6 +60,7 @@ namespace Graphs
             {
                 Edge newEdge = new Edge(vFrom, vTo, val);
                 graph[vFrom].Add(vTo, newEdge);
+                graph[vTo].Add(vFrom, newEdge);
             }
         }
         #endregion
@@ -86,6 +87,7 @@ namespace Graphs
 
             int w = edge.distance;
             graph[edge.from].Remove(edge.to);
+            graph[edge.to].Remove(edge.from);
             return w;
         }
         
@@ -152,5 +154,24 @@ namespace Graphs
             return edge;
         }
         #endregion
-    }
+
+        public int Vertexes()
+        {
+            return graph.Count();
+        }
+        public int Edges()
+        {
+            int count = 0;
+
+            foreach (var item in graph)
+            {
+                foreach (var item2 in item.Value)
+                {
+                    if (GetEdgeRef(item.Key.name, item2.Key.name) != null)
+                        count++;
+                }
+            }
+            return count/2;
+        }
+    }     
 }

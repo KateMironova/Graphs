@@ -25,7 +25,6 @@ namespace Graphs
             graph.Print();
 
             //graph.DelVertex("C");
-
             //graph.Print();
 
             //int a = graph.DelEdge("A", "B");
@@ -38,6 +37,12 @@ namespace Graphs
             //graph.SetEdge("B", "C", 1001);
             //Console.WriteLine("-------------------------");
             //graph.Print();
+
+            //int e = graph.Edges();
+            //Console.WriteLine("edges = {0}", e);
+
+            //int v = graph.Vertexes();
+            //Console.WriteLine("edges = {0}", v);
 
             Console.ReadKey();
         }

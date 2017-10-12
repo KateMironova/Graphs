@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Graph_AdjList.cs" />
     <Compile Include="Graph_AdjMatrix.cs" />
+    <Compile Include="Graph_hybrid.cs" />
     <Compile Include="IGraph.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

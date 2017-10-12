@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Graphs
 {
-    public class Graph_AdjMatrix : IGraph
+    public class Graph_hybrid : IGraph
     {
         public class Vertex
         {
@@ -28,6 +28,8 @@ namespace Graphs
                 this.distance = distance;
             }
         }
+
+
 
         public void AddEdge(string from, string to, int val)
         {
