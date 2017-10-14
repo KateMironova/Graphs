@@ -15,7 +15,7 @@ namespace Graphs
         void Print();
         int GetEdge(string from, string to);
         void SetEdge(string from, string to, int val);
-        int Vertexes();
+        int Vertices();
         int Edges();
         int GetInputEdgeCount(string city);
         int GetOutputEdgeCount(string city);

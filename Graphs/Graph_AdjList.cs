@@ -153,8 +153,8 @@ namespace Graphs
         }
         #endregion
 
-        #region Count of Vertexes and Edges
-        public int Vertexes()
+        #region Count of Vertices and Edges
+        public int Vertices()
         {
             return graph.Count();
         }
@@ -174,7 +174,7 @@ namespace Graphs
 
         #endregion
 
-        #region Input and Output of Edges and Vertexes
+        #region Input and Output of Edges and Vertices
         public int GetInputEdgeCount(string city)
         {
             return GetInputVertexNames(city).Count;

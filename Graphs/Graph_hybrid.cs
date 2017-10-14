@@ -66,7 +66,7 @@ namespace Graphs
             throw new NotImplementedException();
         }
 
-        public int Vertexes()
+        public int Vertices()
         {
             throw new NotImplementedException();
         }

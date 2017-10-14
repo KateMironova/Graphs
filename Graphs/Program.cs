@@ -10,9 +10,9 @@ namespace Graphs
     {
         static void Main(string[] args)
         {
-            // for AdjacencyList
-            
-            Graph_AdjList graph = new Graph_AdjList();
+                       
+            //Graph_AdjList graph = new Graph_AdjList();
+            Graph_AdjMatrix graph = new Graph_AdjMatrix();
             graph.AddVertex("A");
             graph.AddVertex("B");
             graph.AddVertex("C");
@@ -47,7 +47,7 @@ namespace Graphs
             //int e = graph.Edges();
             //Console.WriteLine("edges = {0}", e);
 
-            //int v = graph.Vertexes();
+            //int v = graph.Vertices();
             //Console.WriteLine("edges = {0}", v);
 
             Console.ReadKey();

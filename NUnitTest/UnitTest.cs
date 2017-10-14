@@ -6,6 +6,7 @@ using System.Collections.Generic;
 namespace NUnitTest
 {
     [TestFixture(typeof(Graph_AdjList))]
+    [TestFixture(typeof(Graph_AdjMatrix))]
     public class Tests<TGraph> where TGraph : IGraph, new()
     {
         IGraph graph;
@@ -20,13 +21,13 @@ namespace NUnitTest
         [TestCase(1)]
         [TestCase(2)]
         [TestCase(16)]
-        public void TestNumVertexes(int length)
+        public void TestNumVertices(int length)
         {
             for (int i = 0; i < length; i++)
             {
                 graph.AddVertex("A" + i);
             }
-            Assert.AreEqual(length, graph.Vertexes());
+            Assert.AreEqual(length, graph.Vertices());
         }
 
         [TestCase(0)]
@@ -189,7 +190,7 @@ namespace NUnitTest
             {
                 graph.AddVertex("A" + i);
             }
-            Assert.AreEqual(length, graph.Vertexes());
+            Assert.AreEqual(length, graph.Vertices());
         }
 
         [TestCase(1)]
@@ -201,7 +202,7 @@ namespace NUnitTest
             {
                 graph.AddVertex("A");
             }
-            Assert.AreEqual(1, graph.Vertexes());
+            Assert.AreEqual(1, graph.Vertices());
         }
 
         [TestCase("A")]
@@ -211,7 +212,7 @@ namespace NUnitTest
         {
             graph.AddVertex(name);
             graph.DelVertex(name);
-            Assert.AreEqual(0, graph.Vertexes());
+            Assert.AreEqual(0, graph.Vertices());
         }
 
         [Test]
@@ -238,5 +239,103 @@ namespace NUnitTest
 
             Assert.AreEqual(1, graph.Edges());
         }
+
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(5)]
+        public void TestGetInputEdgeCount(int n)
+        {
+            graph.AddVertex("A");
+            for (int i = 0; i < 5; i++)
+            {
+                graph.AddVertex(i.ToString());
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                graph.AddEdge(i.ToString(), "A", i);
+            }
+
+            Assert.AreEqual(6, graph.Vertices());
+            Assert.AreEqual(n, graph.GetInputEdgeCount("A"));
+        }
+
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(5)]
+        public void TestGetOutputEdgeCount(int n)
+        {
+            graph.AddVertex("A");
+            for (int i = 0; i < 5; i++)
+            {
+                graph.AddVertex(i.ToString());
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                graph.AddEdge("A", i.ToString(), i);
+            }
+
+            Assert.AreEqual(6, graph.Vertices());
+            Assert.AreEqual(n, graph.GetOutputEdgeCount("A"));
+        }
+
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(5)]
+        public void TestGetInputVertexNames(int n)
+        {
+            graph.AddVertex("A");
+            for (int i = 0; i < 5; i++)
+            {
+                graph.AddVertex(i.ToString());
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                graph.AddEdge(i.ToString(), "A", i);
+            }
+
+            string[] expected = new string[n];
+            for (int i = 0; i < n; i++)
+            {
+                expected[i] = i.ToString();
+            }
+
+            Assert.AreEqual(6, graph.Vertices());
+            CollectionAssert.AreEqual(expected, graph.GetInputVertexNames("A"));
+        }
+
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(5)]
+        public void TestGetOutputVertexNames(int n)
+        {
+            graph.AddVertex("A");
+            for (int i = 0; i < 5; i++)
+            {
+                graph.AddVertex(i.ToString());
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                graph.AddEdge("A", i.ToString(), i);
+            }
+
+            string[] expected = new string[n];
+            for (int i = 0; i < n; i++)
+            {
+                expected[i] = i.ToString();
+            }
+
+            Assert.AreEqual(6, graph.Vertices());
+            CollectionAssert.AreEqual(expected, graph.GetOutputVertexNames("A"));
+        }
+
+
     }
 }
