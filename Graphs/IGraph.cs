@@ -17,5 +17,9 @@ namespace Graphs
         void SetEdge(string from, string to, int val);
         int Vertexes();
         int Edges();
+        int GetInputEdgeCount(string city);
+        int GetOutputEdgeCount(string city);
+        List<string> GetInputVertexNames(string city);
+        List<string> GetOutputVertexNames(string city);
     }
 }

@@ -75,5 +75,25 @@ namespace Graphs
         {
             throw new NotImplementedException();
         }
+
+        public int GetInputEdgeCount(string city)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetOutputEdgeCount(string city)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<string> GetInputVertexNames(string city)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<string> GetOutputVertexNames(string city)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace Graphs
         public class Vertex
         {
             public string name;
+            public List<Edge> edges = new List<Edge>();
             public Vertex(string name)
             {
                 this.name = name;
@@ -29,38 +30,37 @@ namespace Graphs
             }
         }
 
-        private Dictionary<Vertex, Dictionary<Vertex, Edge>> graph = new Dictionary<Vertex, Dictionary<Vertex, Edge>>();
-
+        private List<Vertex> graph = new List<Vertex>();
+        
         #region Add
         public void AddVertex(string name)
-        {            
-            if (graph.Keys.FirstOrDefault((x) => x.name == name) == null)
+        {
+            if (graph.FirstOrDefault((x) => x.name == name) == null)
             {
-                graph.Add(new Vertex(name), new Dictionary<Vertex, Edge>());
+                graph.Add(new Vertex(name));
             }
         }
 
         public void AddEdge(string from, string to, int val)
         {
-            Vertex vFrom = graph.Keys.First((x) => x.name == from);
-            Vertex vTo = graph.Keys.FirstOrDefault((x) => x.name == to);
+            Vertex vFrom = graph.FirstOrDefault((x) => x.name == from);
+            Vertex vTo = graph.FirstOrDefault((x) => x.name == to);
                         
             if (vFrom == null)
             {
                 AddVertex(from);
-                vFrom = graph.Keys.First((x) => x.name == from);
+                vFrom = graph.FirstOrDefault((x) => x.name == from);
             }
             if (vTo == null)
             {
                 AddVertex(to);
-                vTo = graph.Keys.FirstOrDefault((x) => x.name == to);
+                vTo = graph.FirstOrDefault((x) => x.name == to);
             }
             // ! проверка на наличие edge между этими пунктами
             if (GetEdgeRef(from, to) == null)
             {
                 Edge newEdge = new Edge(vFrom, vTo, val);
-                graph[vFrom].Add(vTo, newEdge);
-                graph[vTo].Add(vFrom, newEdge);
+                vFrom.edges.Add(newEdge);
             }
         }
         #endregion
@@ -73,9 +73,9 @@ namespace Graphs
                 throw new KeyNotFoundException();
 
             graph.Remove(vertex);
-            foreach (var item in graph)
+            foreach (var v in graph)
             {
-                item.Value.Remove(vertex);
+                v.edges.RemoveAll((x) => x.to == vertex);
             }
         }
         
@@ -86,8 +86,7 @@ namespace Graphs
                 throw new KeyNotFoundException();
 
             int w = edge.distance;
-            graph[edge.from].Remove(edge.to);
-            graph[edge.to].Remove(edge.from);
+            edge.from.edges.Remove(edge);
             return w;
         }
         
@@ -95,18 +94,18 @@ namespace Graphs
 
         public void Print()
         {
-            foreach (var pair in graph)
+            foreach (var vertex in graph)
             {
-                Console.WriteLine("From {0}:", pair.Key.name);
-                foreach (var item in pair.Value)
+                Console.WriteLine("From {0}:", vertex.name);
+                foreach (var edge in vertex.edges)
                 {
-                    Console.WriteLine("\t to {0}: {1}", item.Key.name, item.Value.distance);
+                    Console.WriteLine("\t to {0}: {1}", edge.to.name, edge.distance);
                 }
             }
         }
 
         #region Get_Set_Edge
-       
+
         public int GetEdge(string from, string to)
         {
             Edge edge = GetEdgeRef(from, to);
@@ -129,32 +128,32 @@ namespace Graphs
         #region Get/Set_Ref function
         private Vertex GetVertexRef(string name)
         {
-            Vertex vertex = null;
-            foreach (var item in graph)
-            {
-                if (item.Key.name == name)
-                    vertex = item.Key;
-            }
+            Vertex vertex = graph.FirstOrDefault((x) => x.name == name);
+           
             return vertex;
         }
         private Edge GetEdgeRef(string from, string to)
         {
-            Edge edge = null;
-            foreach (var pair in graph)
+            Edge edgeRef = null;
+            Vertex vFrom = GetVertexRef(from);
+            Vertex vTo = GetVertexRef(to);
+
+            if (vFrom == null || vTo == null)
+                return null;
+
+            foreach (var edge in vFrom.edges)
             {
-                if (pair.Key.name == from)
+                if (edge.to == vTo)
                 {
-                    foreach (var pair2 in pair.Value)
-                    {
-                        if (pair2.Key.name == to)
-                            edge = pair2.Value;
-                    }
+                    edgeRef = edge;
                 }
             }
-            return edge;
+
+            return edgeRef;
         }
         #endregion
 
+        #region Count of Vertexes and Edges
         public int Vertexes()
         {
             return graph.Count();
@@ -162,16 +161,60 @@ namespace Graphs
         public int Edges()
         {
             int count = 0;
-
-            foreach (var item in graph)
+            
+            foreach (var vertex in graph)
             {
-                foreach (var item2 in item.Value)
+                foreach (var edge in vertex.edges)
                 {
-                    if (GetEdgeRef(item.Key.name, item2.Key.name) != null)
-                        count++;
+                    count++;
                 }
             }
-            return count/2;
+            return count;
         }
+
+        #endregion
+
+        #region Input and Output of Edges and Vertexes
+        public int GetInputEdgeCount(string city)
+        {
+            return GetInputVertexNames(city).Count;
+        }
+
+        public int GetOutputEdgeCount(string city)
+        {
+            return GetOutputVertexNames(city).Count;
+        }
+        public List<string> GetInputVertexNames(string city)
+        {
+            Vertex vertex = GetVertexRef(city);
+            if (vertex == null)
+                throw new KeyNotFoundException();
+
+            List<string> list = new List<string>();
+            foreach (Vertex v in graph)
+            {
+                foreach (Edge edge in v.edges)
+                {
+                    if (edge.to.name == city)
+                        list.Add(edge.from.name);
+                }
+            }
+            return list;
+        }
+
+        public List<string> GetOutputVertexNames(string city)
+        {
+            Vertex vertex = GetVertexRef(city);
+            if (vertex == null)
+                throw new KeyNotFoundException();
+
+            List<string> list = new List<string>();
+            foreach (Edge edge in vertex.edges)
+            {
+                list.Add(edge.to.name);
+            }
+            return list;
+        }
+        #endregion
     }     
 }

@@ -11,7 +11,7 @@ namespace Graphs
         static void Main(string[] args)
         {
             // for AdjacencyList
-            /*
+            
             Graph_AdjList graph = new Graph_AdjList();
             graph.AddVertex("A");
             graph.AddVertex("B");
@@ -23,8 +23,12 @@ namespace Graphs
             graph.AddEdge("B", "C", 2);
             graph.AddEdge("C", "D", 3);
             graph.AddEdge("D", "A", 4);
+            graph.AddEdge("A", "D", 5);
 
             graph.Print();
+            
+            //Console.WriteLine(graph.GetInputEdgeCount("A"));
+            //Console.WriteLine(graph.GetOutputEdgeCount("A"));
 
             //graph.DelVertex("C");
             //graph.Print();
@@ -46,7 +50,7 @@ namespace Graphs
             //int v = graph.Vertexes();
             //Console.WriteLine("edges = {0}", v);
 
-            Console.ReadKey();*/
+            Console.ReadKey();
 
 
         }
