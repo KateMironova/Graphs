@@ -95,5 +95,16 @@ namespace Graphs
         {
             throw new NotImplementedException();
         }
+
+        public List<string> ShortestPath(string from, string to)
+        {
+            throw new NotImplementedException();
+        }
+        private List<string> Dijkstra(string from, string to)
+        {
+            throw new NotImplementedException();
+        }
+
+        
     }
 }

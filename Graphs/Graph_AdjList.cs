@@ -215,6 +215,20 @@ namespace Graphs
             }
             return list;
         }
+
+        #endregion
+
+        #region The Shortest Path 
+        public List<string> ShortestPath(string from, string to)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<string> Dijkstra(string from, string to)
+        {
+            throw new NotImplementedException();
+        }
+        
         #endregion
     }     
 }

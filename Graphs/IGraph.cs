@@ -21,5 +21,6 @@ namespace Graphs
         int GetOutputEdgeCount(string city);
         List<string> GetInputVertexNames(string city);
         List<string> GetOutputVertexNames(string city);
+        List<string> ShortestPath(string from, string to);
     }
 }

@@ -208,5 +208,61 @@ namespace Graphs
             return list;
         }
         #endregion
+
+        #region The Shortest Path 
+        public List<string> ShortestPath(string from, string to)
+        {
+            return null;
+        }
+        private List<string> Dijkstra(string from, string to)
+        {
+            List<string> path = new List<string>();
+
+            Vertex vFrom = GetVertexRef(from);
+            Vertex vTo = GetVertexRef(to);
+
+            string[] dist = new string[Vertices()]; // массив найденных кратчайших путей, индексы - вершины графа
+            string[] prev = new string[Vertices()];//вершины предшествующие i-й вершине на кратчайшем пути
+            bool[] visited = new bool[Vertices()];
+            string InfStr = "INF";
+
+            for (int i = 0; i < Vertices(); i++)
+            {
+                dist[i] = InfStr; // массив путей инициализируется бесконечностью
+                visited[i] = true;
+            }
+            dist[0] = "";
+            string minindex = "";
+            string min = "";
+            //do
+            //{ // исполнение алгоритма 
+            //    minindex = InfStr;
+            //    min = InfStr;
+            //    for (int i = 0; i < Vertices(); i++)
+            //    {
+            //        if ((visited[i] == true) && (dist[i] != min))
+            //        {
+            //            min = dist[i];
+            //            minindex = i.ToString();
+            //        }
+            //    }
+            //    if (minindex != InfStr)
+            //    {
+            //        for (int i = 0; i < Vertices(); i++)
+            //        {
+            //            if (a[minindex, i] > 0)
+            //            {
+            //                int temp = min + a[minindex][i];
+            //                if (temp < dist[i])
+            //                    dist[i] = temp;
+            //            }
+            //        }
+            //        visited[minindex] = 0;
+            //    }
+            //} while (minindex < int.MaxValue);
+
+            return path;
+        }
+        #endregion
     }
 }
