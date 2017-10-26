@@ -13,20 +13,20 @@ namespace Graphs
                        
             //Graph_AdjList graph = new Graph_AdjList();
             Graph_AdjMatrix graph = new Graph_AdjMatrix();
-            graph.AddVertex("A");
-            graph.AddVertex("B");
-            graph.AddVertex("C");
-            graph.AddVertex("D");
+            //graph.AddVertex("A");
+            //graph.AddVertex("B");
+            //graph.AddVertex("C");
+            //graph.AddVertex("D");
 
-            graph.AddEdge("A", "B", 1);
-            graph.AddEdge("A", "C", 55);
-            graph.AddEdge("B", "C", 2);
-            graph.AddEdge("C", "D", 3);
-            graph.AddEdge("D", "A", 4);
-            graph.AddEdge("A", "D", 5);
+            //graph.AddEdge("A", "B", 1);
+            //graph.AddEdge("A", "C", 55);
+            //graph.AddEdge("B", "C", 2);
+            //graph.AddEdge("C", "D", 3);
+            //graph.AddEdge("D", "A", 4);
+            //graph.AddEdge("A", "D", 5);
+            //graph.DelVertex("C");
+            //graph.Print();
 
-            graph.Print();
-            
             //Console.WriteLine(graph.GetInputEdgeCount("A"));
             //Console.WriteLine(graph.GetOutputEdgeCount("A"));
 
@@ -50,6 +50,24 @@ namespace Graphs
             //int v = graph.Vertices();
             //Console.WriteLine("edges = {0}", v);
 
+
+            string name = "A";
+            for (int i = 0; i < 5; i++)
+            {
+                string temp = name;
+                graph.AddVertex(temp);
+
+                name = "A" + i;
+                graph.AddVertex(name);
+
+                graph.AddEdge(temp, name, 4);
+            }
+            graph.Print();
+
+            graph.DelVertex("A2");
+            graph.Print();
+            graph.AddEdge("A3", "C", 10);
+            graph.Print();
             Console.ReadKey();
 
 
